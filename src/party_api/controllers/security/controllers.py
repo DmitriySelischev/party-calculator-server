@@ -9,7 +9,8 @@ from party_api.controllers.security.dtos import LoginInDto, LoginOutDto
 class LoginController(BasePCalcAuthController):
     @inject_dto(LoginInDto)
     def post(self, request: HttpRequest, dto: LoginInDto):
-        user = authenticate(request, username=dto.validated_data.get('username'), password=dto.validated_data.get('password'))
+        user = authenticate(request, username=dto.validated_data.get('username'),
+                            password=dto.validated_data.get('password'))
         if user:
             login(request, user)
             return ApiResponse.success(LoginOutDto.from_user(user))
@@ -20,3 +21,8 @@ class LogoutController(BasePCalcController):
     def get(self, request):
         logout(request)
         return ApiResponse.success()
+
+
+class RestoreSessionController(BasePCalcController):
+    def get(self, request):
+        return ApiResponse.success(LoginOutDto.from_user(request.user))

@@ -19,7 +19,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/?', include('party_api.urls'))
+    url(r'^api/', include('party_api.urls')),
+    url(r'^social/', include('social_django.urls', namespace='social'))
 ]
 handler500 = error_500_handler
 handler404 = error_404_handler

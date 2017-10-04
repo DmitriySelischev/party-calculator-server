@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'social_django',
     'party_core',
     'party_api'
 ]
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -126,3 +128,32 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '949988944192-u12pkfvtv50ivmc1bk82bkeumebh5o3h.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'zRZhVAP51XDINw3bT9k9bJYx'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.associate_by_email',
+)
