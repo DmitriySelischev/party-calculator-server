@@ -25,6 +25,6 @@ class LoginOutDto(BaseDto):
 class SignUpDto(BaseDto):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    username = serializers.CharField(required=False)
+    username = serializers.CharField()
     email = serializers.EmailField()
     password = serializers.CharField()
