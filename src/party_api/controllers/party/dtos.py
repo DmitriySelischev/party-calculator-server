@@ -14,3 +14,11 @@ class PartyDto(BaseDto):
         dto.name = party.name
         dto.description = party.description
         return dto
+
+    @classmethod
+    def from_model_list(cls, parties: []):
+        party_list = []
+        for party in parties:
+            dto = cls.from_model(party)
+            party_list.append(dto)
+        return party_list
