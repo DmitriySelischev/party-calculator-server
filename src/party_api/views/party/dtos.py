@@ -1,4 +1,4 @@
-from api_commons.dto import BaseDto, empty
+from party_api.common import BaseDto
 from party_api.models import Party
 from rest_framework import serializers
 

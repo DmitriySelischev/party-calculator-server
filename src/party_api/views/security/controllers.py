@@ -3,14 +3,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpRequest
 from django.contrib.auth.models import User
-from party_api.common import BasePCalcAuthController, BasePCalcController, inject_dto
-from party_api.controllers.security.dtos import LoginInDto, LoginOutDto, SignUpDto
+from party_api.common import BasePCalcAuthController, BasePCalcController, \
+    inject_dto
+from party_api.views.security.dtos import LoginInDto, LoginOutDto, SignUpDto
 
 
 class LoginController(BasePCalcAuthController):
     @inject_dto(LoginInDto)
     def post(self, request: HttpRequest, dto: LoginInDto):
-        user = authenticate(request, username=dto.validated_data.get('username'),
+        user = authenticate(request,
+                            username=dto.validated_data.get('username'),
                             password=dto.validated_data.get('password'))
         if user:
             login(request, user)
@@ -35,16 +37,18 @@ class SignUpController(BasePCalcAuthController):
         if not dto.is_valid():
             return ApiResponse.bad_request()
         try:
-            new_user = User.objects.create_user(username=dto.validated_data.get('username'),
-                                                email=dto.validated_data.get('email'),
-                                                password=dto.validated_data.get('password'),
-                                                first_name=dto.validated_data.get('first_name'),
-                                                last_name=dto.validated_data.get('last_name'))
+            new_user = User.objects.create_user(
+                username=dto.validated_data.get('username'),
+                email=dto.validated_data.get('email'),
+                password=dto.validated_data.get('password'),
+                first_name=dto.validated_data.get('first_name'),
+                last_name=dto.validated_data.get('last_name'))
             new_user.save()
         except IntegrityError as e:
             return ApiResponse.not_authenticated()
         user = authenticate(request,
-                            username=dto.validated_data.get('username'), password=dto.validated_data.get('password'))
+                            username=dto.validated_data.get('username'),
+                            password=dto.validated_data.get('password'))
         if user:
             login(request, user)
             return ApiResponse.success(LoginOutDto.from_user(user))

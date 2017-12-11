@@ -1,6 +1,7 @@
-from api_commons.dto import BaseDto, empty
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
+from party_api.common import BaseDto
 
 
 class LoginInDto(BaseDto):
