@@ -41,6 +41,13 @@ class BaseDto(Dto):
         pass
 
     @classmethod
+    def from_model(cls, model):
+        dto = cls()
+        for field in dto.get_declared_fields():
+            setattr(dto, field, model.pk)
+        return dto
+
+    @classmethod
     def from_model_list(cls, model_list: []):
         result_list = []
         for model in model_list:
